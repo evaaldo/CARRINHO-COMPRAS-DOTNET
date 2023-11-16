@@ -59,6 +59,35 @@ namespace CarrinhoCompras.Controller
             return CreatedAtAction("GetProdutos", new { id = produto.ID }, produto);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> PutProduto(Guid id, Produto produto)
+        {
+            if(id != produto.ID)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(produto).State = EntityState.Modified;
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException)
+            {
+                if(!ProdutoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
         private bool ProdutoExists(Guid id)
         {
             return(_context.Produtos?.Any(e => e.ID == id)).GetValueOrDefault();
