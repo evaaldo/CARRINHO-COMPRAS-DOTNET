@@ -28,7 +28,7 @@ namespace CarrinhoCompras.Controller
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> GerProdutos(int id)
+        public async Task<ActionResult<Produto>> GerProdutos(Guid id)
         {
             if(_context.Produtos == null)
             {
@@ -57,6 +57,11 @@ namespace CarrinhoCompras.Controller
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProdutos", new { id = produto.ID }, produto);
+        }
+
+        private bool ProdutoExists(Guid id)
+        {
+            return(_context.Produtos?.Any(e => e.ID == id)).GetValueOrDefault();
         }
         
     }
