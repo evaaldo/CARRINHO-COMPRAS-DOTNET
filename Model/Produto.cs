@@ -11,5 +11,7 @@ namespace CarrinhoCompras.Model
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime Validade { get; set; }
+        [Required]
+        public int Preco { get; set; }
     }
 }
