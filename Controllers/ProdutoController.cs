@@ -44,6 +44,20 @@ namespace CarrinhoCompras.Controller
 
             return produto;
         }
+
+        [HttpPost]
+        public async Task<ActionResult<Produto>> PostProduto(Produto produto)
+        {
+            if(_context.Produtos == null)
+            {
+                return Problem("Construtor vazio!");
+            }
+
+            _context.Produtos.Add(produto);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetProdutos", new { id = produto.ID }, produto);
+        }
         
     }
 }
