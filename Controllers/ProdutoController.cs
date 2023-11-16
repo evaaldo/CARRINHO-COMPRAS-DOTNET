@@ -59,7 +59,7 @@ namespace CarrinhoCompras.Controller
             return CreatedAtAction("GetProdutos", new { id = produto.ID }, produto);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutProduto(Guid id, Produto produto)
         {
             if(id != produto.ID)
@@ -84,6 +84,27 @@ namespace CarrinhoCompras.Controller
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteProduto(Guid id)
+        {
+            if(_context.Produtos == null)
+            {
+                return NotFound();
+            }
+
+            var produto = await _context.Produtos.FindAsync(id);
+
+            if(produto == null)
+            {
+                return NotFound();
+            }
+
+            _context.Produtos.Remove(produto);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
